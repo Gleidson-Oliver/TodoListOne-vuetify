@@ -1,7 +1,15 @@
 <template>
-  <h1>Hello word</h1>
+  <v-container fluid>
+    <h1>minha listab de tarefas</h1>
+  </v-container>
 </template>
 
-<script setup>
-  //
+<script>
+export default {
+
+}
 </script>
+
+<style>
+
+</style>

@@ -38,30 +38,26 @@
       <v-divider></v-divider>
 
       <!-- Menu de navegação com ícones e textos -->
-      <v-list>
-        <v-list-item>
-          <template #prepend>
-              <v-icon title="Home">mdi-home</v-icon>
-          </template>
-          <v-slide-x-transition leave-absolute>
-            <span v-if="!mini">
-              <router-link to="/">Home</router-link>
-            </span>
-        </v-slide-x-transition>
+      
+      <v-list
+          :lines="false"
+          density="compact"
+          nav
+        >
+          <v-list-item
+            v-for="(item, i) in items_links"
+            :key="i"
+            :value="item"
+            color="primary"
+            :to="item.to"
+          >
+            <template v-slot:prepend>
+              <v-icon :icon="item.icon"></v-icon>
+            </template>
 
-        </v-list-item>
-
-        <v-list-item>
-          <template #prepend>
-            <v-icon title="Perfil">mdi-account-cog</v-icon>
-          </template>
-          <v-slide-x-transition leave-absolute>
-            <span v-if="!mini">
-              <router-link to="/profile">Perfil</router-link>
-            </span>
-          </v-slide-x-transition>
-        </v-list-item>
-      </v-list>
+            <v-list-item-title :textContent="item.name"></v-list-item-title>
+          </v-list-item>
+        </v-list>
     </v-navigation-drawer>
 
     <!-- Barra do app -->
@@ -71,7 +67,7 @@
 
     <!-- Conteúdo principal -->
     <v-main>
-      <v-container>Hello World!</v-container>
+      <router-view></router-view>
     </v-main>
 
     <!-- Rodapé -->
@@ -84,6 +80,12 @@
 <script setup>
 import { ref, computed } from 'vue'
 
+const items_links = ref([
+  {name:"Home", to:"/", icon:"mdi-home"},
+  {name:"Perfil", to:"/profile", icon:"mdi-account-cog"},
+
+  
+])
 // Controle do drawer (aberto ou fechado)
 const drawer = ref(true)
 // Controle do mini-variant (minimizado ou expandido)
@@ -100,7 +102,21 @@ const toggleMini = () => {
 </script>
 
 <style scoped>
+
+  a, li, p {
+    text-decoration: none;
+    list-style: none;
+    padding: 0;
+    margin:0;
+
+  }
+  a{
+    color:inherit;
+  }
+
+ 
 .icon-close-drawer {
   cursor: pointer;
 }
+
 </style>
