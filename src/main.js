@@ -18,3 +18,4 @@ registerPlugins(app)
 
 
 app.mount('#app')
+
