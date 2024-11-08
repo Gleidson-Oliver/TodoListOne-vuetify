@@ -43,7 +43,7 @@ export default {
     const newTask = ref("")
     const tasks = ref([
       
-      {title:"Estudar", done:false}
+      {title:"buscar novas features para o oferteae", done:false}
     ])
 
     const addNewTask = (task)=>{
