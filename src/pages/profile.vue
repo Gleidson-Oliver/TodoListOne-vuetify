@@ -19,7 +19,7 @@
 import { ref , onMounted} from 'vue'
 import { auth, collectionProfile} from '../plugins/firebase'
 
-import { doc, setDoc } from 'firebase/firestore'
+import { doc, setDoc, getDoc} from 'firebase/firestore'
 
 const first_name = ref("")
 const last_name = ref("")
@@ -29,13 +29,9 @@ const uid = ref("")
 
 const saveData = async ()=>{
 
-  console.log("dentro da função saveDate, ", uid.value)
  
   if(uid.value.trim() !== ""){
 
-    console.log("dentro do IF da função saveDate, ", uid.value)
-
-    
     const profileRef = doc(collectionProfile, uid.value)
 
     await setDoc(profileRef, {
@@ -47,7 +43,6 @@ const saveData = async ()=>{
   
    
   alert("Alterações realizadas com sucesso!");
-
 
   }else{
     console.log(" usuário não autenticado ")
@@ -65,7 +60,18 @@ onMounted( async()=>{
 
     uid.value = auth.currentUser.uid
     
-    console.log(uid.value)
+    const queryUser = doc(collectionProfile, uid.value)
+
+    const querySnapshot = await getDoc(queryUser)
+
+    if(querySnapshot.exists()){
+       
+      const user = querySnapshot.data()
+
+      first_name.value = user.first_name
+      last_name.value = user.last_name
+
+    }
   
   }
 

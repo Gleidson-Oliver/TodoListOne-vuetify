@@ -27,10 +27,10 @@
         <v-list>
           <v-list-item>
             <template #prepend>
-              <v-icon  title="Gleidson Oliveira">mdi-account</v-icon>
+              <v-icon  :title="first_name + ' ' + last_name">mdi-account</v-icon>
             </template>
             <v-slide-x-transition leave-absolute>
-              <span v-if="!mini">Gleidson Oliveir</span>
+              <span v-if="!mini" :textContent="first_name + ' ' + last_name"></span>
             </v-slide-x-transition>
           </v-list-item>
         </v-list>
@@ -79,7 +79,12 @@
   </template>
   
   <script setup>
-  import { ref, computed } from 'vue'
+  import { ref, computed, onMounted } from 'vue'
+  import { doc, onSnapshot} from 'firebase/firestore'
+  import { collectionProfile } from '@/plugins/firebase';
+  import { auth } from '@/plugins/firebase';
+
+
   
   const items_links = ref([
     {name:"Home", to:"/", icon:"mdi-home"},
@@ -92,6 +97,11 @@
   const drawer = ref(true)
   // Controle do mini-variant (minimizado ou expandido)
   const mini = ref(false)
+
+  const first_name = ref("")
+  const last_name = ref("")
+  const uid = ref("")
+
   
   const drawerWidth = computed(() => (
     mini.value ? 80 : 300
@@ -101,6 +111,24 @@
   const toggleMini = () => {
     mini.value = !mini.value
   }
+
+  onMounted(() => {
+  if (auth.currentUser) {
+    uid.value = auth.currentUser.uid
+
+    const userDocRef = doc(collectionProfile, uid.value)
+
+    onSnapshot(userDocRef, (doc) => {
+      if (doc.exists()) {
+        const userData = doc.data()
+        first_name.value = userData.first_name || ""
+        last_name.value = userData.last_name || ""
+      } else {
+        console.log("Documento do usuário não encontrado.")
+      }
+    })
+  }
+})
   </script>
   
   <style scoped>
