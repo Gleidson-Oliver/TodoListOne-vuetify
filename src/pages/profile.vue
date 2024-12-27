@@ -27,7 +27,37 @@ const last_name = ref("")
 const uid = ref("")
 
 
+onMounted( async()=>{
+  
+  if(auth.currentUser){
+
+    uid.value = auth.currentUser.uid
+    console.log(uid.value)
+    
+    const queryUser = doc(collectionProfile, uid.value)
+
+    const querySnapshot = await getDoc(queryUser)
+
+    if(querySnapshot.exists()){
+       
+      const user = querySnapshot.data()
+
+      first_name.value = user.first_name
+      last_name.value = user.last_name
+
+    }else{
+      console.log(`o usuario ${uid.value} não possui um perfil`)
+    }
+  
+  }else if(!auth.currentUser) {
+  console.error("Usuário não autenticado");
+  return;
+}
+
+}) 
+
 const saveData = async ()=>{
+
 
  
   if(uid.value.trim() !== ""){
@@ -52,30 +82,6 @@ const saveData = async ()=>{
 
 }
 
-
-
-onMounted( async()=>{
-  
-  if(auth.currentUser){
-
-    uid.value = auth.currentUser.uid
-    
-    const queryUser = doc(collectionProfile, uid.value)
-
-    const querySnapshot = await getDoc(queryUser)
-
-    if(querySnapshot.exists()){
-       
-      const user = querySnapshot.data()
-
-      first_name.value = user.first_name
-      last_name.value = user.last_name
-
-    }
-  
-  }
-
-}) 
 
 
 </script>

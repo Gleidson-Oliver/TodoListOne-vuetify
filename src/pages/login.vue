@@ -26,9 +26,10 @@
           :append-icon="show ? 'mdi-eye' : 'mdi-eye-off' "
           @click:append="show= !show"
           v-model="user.password"
+          @keyup.enter.exact="Login"
           label="Senha"></v-text-field>
 
-          <v-btn @click="Login" color="primary" min-width="100">
+          <v-btn @click="Login"  color="primary" min-width="100">
             <v-progress-circular color="white" v-show="loadingComp" indeterminate :size="25" :width="2"></v-progress-circular>
             <span v-show="!loadingComp">Entrar</span>
           </v-btn>
