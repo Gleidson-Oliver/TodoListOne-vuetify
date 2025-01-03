@@ -32,7 +32,6 @@ onMounted( async()=>{
   if(auth.currentUser){
 
     uid.value = auth.currentUser.uid
-    console.log(uid.value)
     
     const queryUser = doc(collectionProfile, uid.value)
 
